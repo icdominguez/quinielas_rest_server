@@ -77,6 +77,23 @@ paths:
                   application/json:
                     schema: 
                       $ref: '#/components/schemas/League'
+  /team/{teamId}:
+    delete:
+      tags:
+        - team
+      summary: Deletes a team by its object id
+      parameters:
+        - name: teamId
+          in: path
+          description: team to delete
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 'Team succesfully deleted from database'
+        '400':
+          description: 'Invalid id provided'
 components:
   schemas:
     Team:

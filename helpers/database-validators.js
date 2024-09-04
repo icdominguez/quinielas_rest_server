@@ -1,4 +1,3 @@
-const league = require('../models/league')
 const League = require('../models/league')
 const Team = require('../models/team')
 
@@ -23,8 +22,16 @@ const findLeagueById = async(leagueId) => {
     }
 }
 
+const findTeamById = async(teamId) => {
+    const teamExists = await Team.findById(teamId)
+    if(!teamExists) {
+        throw new Error(`Team ${teamId} does not exists in database`)
+    }
+}
+
 module.exports = {
     teamExists,
     leagueExists,
-    findLeagueById
+    findLeagueById,
+    findTeamById
 }

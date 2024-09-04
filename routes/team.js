@@ -1,8 +1,8 @@
 const { Router } = require('express')
 const { check } = require('express-validator')
-const { addTeam } = require('../controllers/team')
+const { addTeam, deleteTeam } = require('../controllers/team')
 const { checkFields } = require('../middlewares/check-fields')
-const { teamExists, leagueExists, findLeagueById } = require('../helpers/database-validators')
+const { teamExists, findLeagueById, findTeamById } = require('../helpers/database-validators')
 const { checkImageFile } = require('../middlewares/check-image-file')
 
 const router = Router()
@@ -15,5 +15,11 @@ router.post('/add', [
     check('league').custom(findLeagueById),
     checkFields,
 ], addTeam)
+
+router.delete('/:teamId', [
+    check('teamId').not().isEmpty(),
+    check('teamId').custom(findTeamById),
+    checkFields
+], deleteTeam)
 
 module.exports = router

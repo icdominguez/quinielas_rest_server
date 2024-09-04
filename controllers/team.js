@@ -17,6 +17,16 @@ const addTeam = async (req, res = response) => {
     })
 }
 
+const deleteTeam = async (req, res = response) => {
+    const { teamId } = req.params
+    await Team.findOneAndDelete({ _id: teamId })
+
+    res.json({
+        msg: `Team with ${teamId} succesfully deleted from database`
+    })
+}
+
 module.exports = {
-    addTeam
+    addTeam,
+    deleteTeam
 }
