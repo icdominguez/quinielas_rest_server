@@ -7,6 +7,14 @@ const uploadFileCloudinary = async(file) => {
     return secure_url
 }
 
+const removeImageCloudinary = async(imageUrl) => {
+    const nameArray = imageUrl.split('/')
+    const name = nameArray[nameArray.length - 1]
+    const [public_id] = name.split('.')
+    cloudinary.uploader.destroy(public_id)
+}
+
 module.exports = {
-    uploadFileCloudinary
+    uploadFileCloudinary,
+    removeImageCloudinary
 }

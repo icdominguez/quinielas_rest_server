@@ -36,10 +36,7 @@ paths:
                     required: true
                   league:
                     type: string
-                    description: League relate to the new team
-                    enum:
-                      - LaLiga
-                      - LaLiga2
+                    description: Object id of the league related to the new team
                     required: true
       responses:
         '200':
@@ -94,6 +91,34 @@ paths:
           description: 'Team succesfully deleted from database'
         '400':
           description: 'Invalid id provided'
+  /team/{teamId}/image:
+    put:
+      tags:
+        - team
+      summary: Updates the image of an existing team
+      parameters:
+        - name: teamId
+          in: path
+          description: team to delete
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+                type: object
+                properties:
+                  image:
+                    type: string
+                    format: binary
+                    description: New image to be set on the team
+                    required: true
+      responses:
+        '200':
+          description: 'Team succesfully updated'
+        '400':
+          description: 'Invalid id or image provided'
 components:
   schemas:
     Team:

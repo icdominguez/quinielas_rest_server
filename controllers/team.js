@@ -1,9 +1,9 @@
 const { response } = require('express')
 const Team = require('../models/team')
 
-const { uploadFileCloudinary } = require('../helpers/cloudinary-actions')
+const { uploadFileCloudinary, removeImageCloudinary } = require('../helpers/cloudinary-actions')
 
-const addTeam = async (req, res = response) => {
+const addTeam = async(req, res = response) => {
     const body = req.body
     const team = new Team(body)
 
@@ -17,7 +17,7 @@ const addTeam = async (req, res = response) => {
     })
 }
 
-const deleteTeam = async (req, res = response) => {
+const deleteTeam = async(req, res = response) => {
     const { teamId } = req.params
     await Team.findOneAndDelete({ _id: teamId })
 
@@ -26,7 +26,25 @@ const deleteTeam = async (req, res = response) => {
     })
 }
 
+const updateTeamImage = async(req, res = response) => {
+    const { teamId } = req.params
+    
+    const teamBbdd = await Team.findById(teamId)
+    await removeImageCloudinary(teamBbdd.image)
+
+    const cloudinaryFileUrl = await uploadFileCloudinary(req.files.image.tempFilePath)
+    teamBbdd.image = cloudinaryFileUrl
+
+    await Team.findByIdAndUpdate(teamId, { image: cloudinaryFileUrl })
+
+    res.json({
+        team: teamBbdd
+    })
+    
+}
+
 module.exports = {
     addTeam,
-    deleteTeam
+    deleteTeam,
+    updateTeamImage
 }
