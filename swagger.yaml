@@ -12,6 +12,20 @@ tags:
   - name: league
     description: Everything about leagues
 paths:
+  /team:
+    get:
+      tags:
+        - team
+      summary: Returns a specific team by the id provided
+      description: Return a team if it exists in database
+      operationId: getTeamById
+      responses:
+        '200':
+          description: Searched team
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Team'
   /team/add:
     post:
       tags: 

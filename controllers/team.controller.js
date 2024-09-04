@@ -3,6 +3,22 @@ const Team = require('../models/team')
 
 const { uploadFileCloudinary, removeImageCloudinary } = require('../helpers/cloudinary-actions')
 
+const getTeamById = async(req, res = response) => {
+    const { teamId } = req.params
+
+    const teamBbdd = await Team.findById({ teamId })
+
+    if(!teamBbdd) {
+        re.status(400).json({
+            msg: `Team with id: ${teamId} not found in database`
+        })
+    }
+
+    res.status(200).json({
+        team: teamBbdd
+    })
+}
+
 const addTeam = async(req, res = response) => {
     const body = req.body
     const team = new Team(body)
@@ -44,7 +60,8 @@ const updateTeamImage = async(req, res = response) => {
 }
 
 module.exports = {
+    getTeamById,
     addTeam,
-    deleteTeam,
-    updateTeamImage
+    updateTeamImage,
+    deleteTeam
 }
