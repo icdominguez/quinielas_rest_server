@@ -23,8 +23,8 @@ class Server {
     }
 
     routes() {
-        this.app.use(this.teamPath, require('../routes/team'))
-        this.app.use(this.leaguePath, require('../routes/league'))
+        this.app.use(this.teamPath, require('../routes/team.routes'))
+        this.app.use(this.leaguePath, require('../routes/league.routes'))
     }
 
     middlewares() {

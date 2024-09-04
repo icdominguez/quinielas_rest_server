@@ -1,6 +1,6 @@
 const { Router } = require('express')
 const { check } = require('express-validator')
-const { addTeam, deleteTeam, updateTeamImage } = require('../controllers/team')
+const { addTeam, deleteTeam, updateTeamImage } = require('../controllers/team.controller')
 const { checkFields } = require('../middlewares/check-fields')
 const { teamExists, findLeagueById, findTeamById } = require('../helpers/database-validators')
 const { checkImageFile } = require('../middlewares/check-image-file')

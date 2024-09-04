@@ -4,7 +4,7 @@ const League = require('../models/league')
 
 
 const getAllLeagues = async(req, res = response) => {
-    const [leagues] = await League.find()
+    const [leagues] = await Promise.all([League.find()])
 
     return res.status(200).json({
         leagues: [leagues]
