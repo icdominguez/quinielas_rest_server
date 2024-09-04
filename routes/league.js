@@ -2,10 +2,12 @@ const { Router } = require('express')
 const { check } = require('express-validator')
 const { checkFields } = require('../middlewares/check-fields')
 const { leagueExists } = require('../helpers/database-validators')
-const { addLeague } = require('../controllers/league')
+const { addLeague, getAllLeagues } = require('../controllers/league')
 const { checkImageFile } = require('../middlewares/check-image-file')
 
 const router = Router()
+
+router.get('/', getAllLeagues)
 
 router.post('/add', [
     checkImageFile,

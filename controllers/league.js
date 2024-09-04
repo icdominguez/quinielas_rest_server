@@ -2,6 +2,15 @@ const { response } = require('express')
 const { uploadFileCloudinary } = require('../helpers/cloudinary-actions')
 const League = require('../models/league')
 
+
+const getAllLeagues = async(req, res = response) => {
+    const [leagues] = await League.find()
+
+    return res.status(200).json({
+        leagues: [leagues]
+    })
+}
+
 const addLeague = async (req, res = response) => {
     const body = req.body
     const league = new League(body)
@@ -17,5 +26,6 @@ const addLeague = async (req, res = response) => {
 }
 
 module.exports = {
-    addLeague
+    addLeague,
+    getAllLeagues
 }

@@ -45,35 +45,6 @@ paths:
             application/json:
               schema: 
                 $ref: '#/components/schemas/Team'         
-  /league/add:
-    post:
-      tags:
-        - league
-      summary: Adds a new league
-      description: New league that will include new teams
-      operationId: addLeague
-      requestBody:
-        content:
-          multipart/form-data:
-            schema:
-                type: object
-                properties:
-                  name: 
-                    type: string
-                    description: Name of the new team
-                    required: true
-                  image:
-                    type: string
-                    format: binary
-                    description: Appropiate logo for the new team
-                    required: true
-      responses:
-              '200':
-                description: Team schema from mongoose
-                content:
-                  application/json:
-                    schema: 
-                      $ref: '#/components/schemas/League'
   /team/{teamId}:
     delete:
       tags:
@@ -119,6 +90,51 @@ paths:
           description: 'Team succesfully updated'
         '400':
           description: 'Invalid id or image provided'
+  /league/add:
+    post:
+      tags:
+        - league
+      summary: Adds a new league
+      description: New league that will include new teams
+      operationId: addLeague
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+                type: object
+                properties:
+                  name: 
+                    type: string
+                    description: Name of the new team
+                    required: true
+                  image:
+                    type: string
+                    format: binary
+                    description: Appropiate logo for the new team
+                    required: true
+      responses:
+              '200':
+                description: Team schema from mongoose
+                content:
+                  application/json:
+                    schema: 
+                      $ref: '#/components/schemas/League'
+  /league:
+    get:
+      tags:
+        - league
+      summary: Returns all available leagues
+      description: Returns all available leagues in database
+      operationId: getAllLeagues
+      responses:
+        '200':
+          description: Available leagues
+          content: 
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/League'
 components:
   schemas:
     Team:
