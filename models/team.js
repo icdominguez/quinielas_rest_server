@@ -10,9 +10,9 @@ const TeamSchema = Schema({
         required: [true, "image is required"]
     },
     league: {
-        type: String,
-        required: [true, "league is required"],
-        enum: ['LaLiga', 'LaLiga2']
+        type: Schema.Types.ObjectId,
+        ref: 'League',
+        required: [true, "league is required"]
     }
 })
 
