@@ -43,12 +43,40 @@ paths:
                     required: true
       responses:
         '200':
-          description: A JSON array of user names
+          description: Team schema from mongoose
           content:
             application/json:
               schema: 
-                $ref: '#/components/schemas/Team'
-                
+                $ref: '#/components/schemas/Team'         
+  /league/add:
+    post:
+      tags:
+        - league
+      summary: Adds a new league
+      description: New league that will include new teams
+      operationId: addLeague
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+                type: object
+                properties:
+                  name: 
+                    type: string
+                    description: Name of the new team
+                    required: true
+                  image:
+                    type: string
+                    format: binary
+                    description: Appropiate logo for the new team
+                    required: true
+      responses:
+              '200':
+                description: Team schema from mongoose
+                content:
+                  application/json:
+                    schema: 
+                      $ref: '#/components/schemas/League'
 components:
   schemas:
     Team:
@@ -75,6 +103,26 @@ components:
             - LaLiga
             - LaLiga2
           example: LaLiga
+        __v:
+          type: string
+          example: 0
+    League:
+      required:
+        - _id
+        - name
+        - image
+        - __v0
+      type: object
+      properties: 
+        _id:
+          type: String
+          example: 66d6f939d02d29f6426b564f
+        name: 
+          type: string
+          example: LaLiga
+        image:
+          type: string
+          example:
         __v:
           type: string
           example: 0

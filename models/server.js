@@ -12,6 +12,7 @@ class Server {
         this.app = express()
         this.port = process.env.PORT;
         this.teamPath = "/api/team"
+        this.leaguePath = "/api/league"
         this.connectDatabase()
         this.middlewares()
         this.routes()
@@ -23,6 +24,7 @@ class Server {
 
     routes() {
         this.app.use(this.teamPath, require('../routes/team'))
+        this.app.use(this.leaguePath, require('../routes/league'))
     }
 
     middlewares() {

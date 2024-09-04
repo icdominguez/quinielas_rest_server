@@ -1,6 +1,6 @@
 const { response } = require("express")
 
-const isValidImage = (req, res = response, next) => {
+const checkImageFile = (req, res = response, next) => {
     if(!req.files) {
         return res.status(400).json({
             msg: `There's no files to upload`
@@ -26,5 +26,5 @@ const isValidImage = (req, res = response, next) => {
 }
 
 module.exports = {
-    isValidImage
+    checkImageFile
 }
