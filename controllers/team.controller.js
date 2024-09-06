@@ -19,6 +19,22 @@ const getTeamById = async(req, res = response) => {
     })
 }
 
+const getTeamsByLeagueId = async(req, res = response) => {
+    const { leagueId } = req.params
+
+    console.log(`getTeamsByLeagueId with id: ${leagueId}`)
+
+    const [teams] = await Promise.all(
+        [
+            Team.find({ league: leagueId })
+        ]
+    )
+
+    res.json({
+        teams: teams
+    })
+}
+
 const addTeam = async(req, res = response) => {
     const body = req.body
     const team = new Team(body)
@@ -61,6 +77,7 @@ const updateTeamImage = async(req, res = response) => {
 
 module.exports = {
     getTeamById,
+    getTeamsByLeagueId,
     addTeam,
     updateTeamImage,
     deleteTeam

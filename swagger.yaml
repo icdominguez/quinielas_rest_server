@@ -11,21 +11,34 @@ tags:
     description: Operation about teams
   - name: league
     description: Everything about leagues
+  - name: match
+    description: Everything about matches
 paths:
-  /team:
+  /team/league/{leagueId}:
     get:
       tags:
         - team
-      summary: Returns a specific team by the id provided
-      description: Return a team if it exists in database
-      operationId: getTeamById
+      summary: Returns every team for the specified league
+      description: Get all teams asociated to an specific existing league
+      operationId: getTeamsByLeague
+      parameters:
+        - name: leagueId
+          in: path
+          description: league to provide it teams
+          required: true
+          schema:
+            type: string
       responses:
         '200':
-          description: Searched team
-          content: 
+          description: Corresponding teams
+          content:
             application/json:
               schema:
+              type: array
+              items:
                 $ref: '#/components/schemas/Team'
+        '400':
+          description: Invalid id provided
   /team/add:
     post:
       tags: 
@@ -76,6 +89,27 @@ paths:
           description: 'Team succesfully deleted from database'
         '400':
           description: 'Invalid id provided'
+      /team:
+    get:
+      tags:
+        - team
+      summary: Returns a specific team by the id provided
+      description: Return a team if it exists in database
+      operationId: getTeamById
+      parameters:
+        - name: teamId
+          in: path
+          description: team to search
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Searched team
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Team'
   /team/{teamId}/image:
     put:
       tags:
