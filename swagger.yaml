@@ -183,6 +183,26 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/League'
+  /match:
+    post:
+      tags: 
+        - match
+      summary: Creates a new match
+      description: Creates a new match in the database if home and away teams ids are valid.
+      operationId: addMatch
+      requestBody:
+        description: Creates a new match in database
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Match'
+      responses:
+        '200':
+          description: Created match
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Match'
 components:
   schemas:
     Team:
@@ -231,4 +251,31 @@ components:
           example:
         __v:
           type: string
+          example: 0
+    Match:
+      required:
+        - home_team_info
+        - away_team_info
+        - date
+        - __v0
+      type: object
+      properties:
+        home_team_info:
+          $ref: '#/components/schemas/MatchInfo'
+        away_team_info: 
+          $ref: '#/components/schemas/MatchInfo'
+        date:
+          type: integer
+          format: int64
+          example: 1725541239
+    MatchInfo:
+      required:
+        - team_id
+      type: object
+      properties:
+        team_id:
+          type: string
+          example: '66d86491c4e9215aab8e9e32'
+        score:
+          type: integer
           example: 0
