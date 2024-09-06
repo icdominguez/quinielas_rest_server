@@ -9,7 +9,7 @@ const getTeamById = async(req, res = response) => {
     const teamBbdd = await Team.findById({ teamId })
 
     if(!teamBbdd) {
-        re.status(400).json({
+        res.status(400).json({
             msg: `Team with id: ${teamId} not found in database`
         })
     }

@@ -204,6 +204,32 @@ paths:
               schema:
                 $ref: '#/components/schemas/Match'
   /match/{matchId}:
+    get:
+      tags:
+        - match
+      summary: Returns a match if it exists in database
+      description: Provide a valid mongo id corresponfing to a match and it will be returned
+      operationId: getMatchById
+      parameters:
+        - name: matchId
+          in: path
+          description: match to search
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Created match
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Match'
+        '400':
+          description: Founded match
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Match'
     delete:
       tags:
         - match
