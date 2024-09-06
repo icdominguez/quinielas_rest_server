@@ -1,8 +1,8 @@
 const { Router } = require('express')
 const { check } = require('express-validator')
-const { addMatch } = require('../controllers/match.controller')
+const { addMatch, deleteMatch } = require('../controllers/match.controller')
 const { checkFields } = require('../middlewares/check-fields')
-const { teamExists } = require('../helpers/database-validators')
+const { teamExists, findMatchById } = require('../helpers/database-validators')
 
 const router = Router()
 
@@ -15,5 +15,11 @@ router.post('/', [
     check('away_team_info.team_id', 'Home team does not exists').custom(teamExists),
     checkFields
 ], addMatch)
+
+router.delete('/:matchId', [
+    check('matchId', 'Id provided is not a valid mongo id').isMongoId(),
+    check('matchId', 'match does not exists in database').custom(findMatchById),
+    checkFields
+], deleteMatch)
 
 module.exports = router

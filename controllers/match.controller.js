@@ -46,6 +46,17 @@ const addMatch = async(req, res = response) => {
     })
 }
 
+const deleteMatch = async(req, res = response) => {
+    console.log('delete match endpoint')
+    const { matchId } = req.params
+    await Match.findOneAndDelete({ _id: matchId })
+
+    res.status(200).json({
+        msg: "Match succesfully deleted from database"
+    })
+}
+
 module.exports = {
-    addMatch
+    addMatch,
+    deleteMatch
 }

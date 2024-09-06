@@ -89,7 +89,7 @@ paths:
           description: 'Team succesfully deleted from database'
         '400':
           description: 'Invalid id provided'
-      /team:
+  /team:
     get:
       tags:
         - team
@@ -203,6 +203,25 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Match'
+  /match/{matchId}:
+    delete:
+      tags:
+        - match
+      summary: Deletes an existing match in database
+      description: Provide a valid mongo id corresponding to a match and it will be deleted
+      operationId: deleteMatch
+      parameters:
+          - name: matchId
+            in: path
+            description: match to delete
+            required: true
+            schema:
+              type: string
+      responses:
+        '200':
+          description: 'Team succesfully deleted from database'
+        '400':
+          description: 'Invalid id provided'
 components:
   schemas:
     Team:
