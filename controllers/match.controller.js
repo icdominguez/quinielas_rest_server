@@ -128,6 +128,29 @@ const addMatch = async(req, res = response) => {
     })
 }
 
+const updateMatch = async(req, res = response) => {
+    const { matchId } = req.params
+    const body = req.body
+
+    const match = await Match.findByIdAndUpdate(
+        matchId, 
+        { 
+            $set: {
+                "home_team_info.score": body.home_team_info.score, 
+                "home_team_info.team_id": body.home_team_info.team_id, 
+                "away_team_info.score": body.away_team_info.score, 
+                "away_team_info.team_id": body.away_team_info.team_id, 
+                date: body.date
+            }
+        }
+    )
+
+    return res.status(200).json({
+        match: match
+    })
+
+}
+
 const deleteMatch = async(req, res = response) => {
     console.log('delete match endpoint')
     const { matchId } = req.params
@@ -142,5 +165,6 @@ module.exports = {
     getAllMatches,
     getMatchById,
     addMatch,
+    updateMatch,
     deleteMatch
 }

@@ -230,6 +230,31 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Match'
+    put:
+      tags:
+        - match
+      summary: Updates the match provided by id
+      description: It doesn't matter which param needs to be update. Just send the proper json and it will be updated
+      operationId: updateMatch
+      parameters:
+        - name: matchId
+          in: path
+          description: match to update
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Match'
+      responses:
+        '200':
+          description: Match object updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Match'
     delete:
       tags:
         - match
