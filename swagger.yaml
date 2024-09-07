@@ -248,6 +248,24 @@ paths:
           description: 'Team succesfully deleted from database'
         '400':
           description: 'Invalid id provided'
+  /match/all:
+    get:
+      tags:
+        - match
+      summary: Returns all the matches available
+      description: Returns all the matches created in the database
+      operationId: getAllMatches
+      responses:
+        '200':
+          description: Available matches
+          content:
+            application/json:
+              schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/Match'
+        '400':
+          description: Invalid id provided
 components:
   schemas:
     Team:

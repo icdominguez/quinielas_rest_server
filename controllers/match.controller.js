@@ -3,6 +3,42 @@ const { response } = require('express')
 const Match = require('../models/match')
 const Team = require('../models/team')
 
+const getAllMatches = async(req, res) => {
+    const [matchesBbdd] = await Promise.all([
+        Match.find()
+    ])
+
+    const matches = []
+
+    for(const match of matchesBbdd) {
+        const homeTeam = await Team.findById(match.home_team_info.team_id)
+        const awayTeam = await Team.findById(match.away_team_info.team_id)
+        
+        matches.push({
+            _id: match._id,
+            home_team_info: {
+                team_id: homeTeam._id,
+                name: homeTeam.name,
+                league: homeTeam.league,
+                image: homeTeam.image,
+                score: match.home_team_info.score
+            },
+            away_team_info: {
+                team_id: awayTeam._id,
+                name: awayTeam.name,
+                league: awayTeam.league,
+                image: awayTeam.image,
+                score: match.away_team_info.score
+            },
+            date: match.date
+        })
+    }
+
+    res.status(200).json({
+        matches: matches
+    })
+}
+
 const getMatchById = async(req, res = response) => {
     const { matchId } = req.params
 
@@ -103,6 +139,7 @@ const deleteMatch = async(req, res = response) => {
 }
 
 module.exports = {
+    getAllMatches,
     getMatchById,
     addMatch,
     deleteMatch
