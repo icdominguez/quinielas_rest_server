@@ -254,6 +254,52 @@ paths:
                   application/json:
                     schema: 
                       $ref: '#/components/schemas/League'
+  /league/{leagueId}:
+    get:
+      tags:
+        - league
+      security:
+        - bearerAuth: []
+      summary: Returns the requested league if exists
+      description: Contacts to the database asking if the provided league exists in database
+      operationId: findLeagueById
+      parameters:
+        - name: leagueId
+          in: path
+          description: league to search
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: League object if found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/League'
+      summary: 
+    delete:
+      tags:
+        - league
+      security:
+        - bearerAuth: []
+      summary: Returns the requested league if exists
+      description: Contacts to the database asking if the provided league exists in database
+      operationId: deleteLeagueById
+      parameters:
+        - name: leagueId
+          in: path
+          description: league to search
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: League succesfully deleted
+        '400':
+          description: Provided league id is not supported or does not exits
+        '500':
+          description: Error trying to connect with the database
   /match:
     post:
       tags: 
@@ -442,7 +488,7 @@ components:
         - __v0
       type: object
       properties: 
-        _id:
+        leagueId:
           type: String
           example: 66d6f939d02d29f6426b564f
         name: 
@@ -451,9 +497,6 @@ components:
         image:
           type: string
           example:
-        __v:
-          type: string
-          example: 0
     Match:
       required:
         - home_team_info
