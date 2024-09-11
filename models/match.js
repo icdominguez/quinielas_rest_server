@@ -29,4 +29,10 @@ const MatchSchema = Schema({
     },
 })
 
+MatchSchema.methods.toJSON = function() {
+    const { __v, _id, ...team } = this.toObject()
+    team.teamId = _id
+    return team
+}
+
 module.exports = model('Match', MatchSchema)

@@ -7,6 +7,10 @@ servers:
   - url: http://localhost:8080/api
     description: Server for testing
 tags:
+  - name: auth
+    description: Everything realted to users authentication
+  - name: user 
+    description: Everything about users
   - name: team
     description: Operation about teams
   - name: league
@@ -14,10 +18,67 @@ tags:
   - name: match
     description: Everything about matches
 paths:
+  /auth/login:
+    post:
+      tags:
+        - auth
+      summary: Authenticate a user into the app
+      description: Authenticate a user into the app
+      operationId: login
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Login'
+      responses:
+        '200':
+          description: Login
+  /user:
+    post:
+      tags:
+        - user
+      summary: Adds a new user to the database
+      description: New user will be added if not exist in database. Only supported for normal users, not admins
+      operationId: AddUser
+      requestBody:
+        content:
+          application/json:
+            schema: 
+              $ref: '#/components/schemas/User'
+      responses:
+        '200':
+          description: User schema from mongoose
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'                    
+  /user/{userId}:
+    delete:
+      tags:
+        - user
+      security:
+        - bearerAuth: []
+      summary: Deletes a user from the database
+      description: Delete a user from the database if it exists
+      operationId: deleteUser
+      parameters:
+        - name: userId
+          in: path
+          description: user to delete
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 'User succesfully deleted from database'
+        '400':
+          description: 'Invalid id provided'
   /team/league/{leagueId}:
     get:
       tags:
         - team
+      security:
+        - bearerAuth: []
       summary: Returns every team for the specified league
       description: Get all teams asociated to an specific existing league
       operationId: getTeamsByLeague
@@ -39,10 +100,53 @@ paths:
                 $ref: '#/components/schemas/Team'
         '400':
           description: Invalid id provided
-  /team/add:
+  /team/{teamId}:
+    delete:
+      tags:
+        - team
+      security:
+        - bearerAuth: []
+      summary: Deletes a team by its object id
+      parameters:
+        - name: teamId
+          in: path
+          description: team to delete
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 'Team succesfully deleted from database'
+        '400':
+          description: 'Invalid id provided'
+  /team:
+    get:
+      tags:
+        - team
+      security:
+        - bearerAuth: []
+      summary: Returns a specific team by the id provided
+      description: Return a team if it exists in database
+      operationId: getTeamById
+      parameters:
+        - name: teamId
+          in: path
+          description: team to search
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Searched team
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Team'
     post:
       tags: 
         - team
+      security:
+        - bearerAuth: []
       summary: Adds a new Team for an specific league.
       description: New team will be added if not exist to the specified league uploading the image attached to cloudinary.
       operationId: addTeam
@@ -71,49 +175,13 @@ paths:
           content:
             application/json:
               schema: 
-                $ref: '#/components/schemas/Team'         
-  /team/{teamId}:
-    delete:
-      tags:
-        - team
-      summary: Deletes a team by its object id
-      parameters:
-        - name: teamId
-          in: path
-          description: team to delete
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: 'Team succesfully deleted from database'
-        '400':
-          description: 'Invalid id provided'
-  /team:
-    get:
-      tags:
-        - team
-      summary: Returns a specific team by the id provided
-      description: Return a team if it exists in database
-      operationId: getTeamById
-      parameters:
-        - name: teamId
-          in: path
-          description: team to search
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Searched team
-          content: 
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Team'
+                $ref: '#/components/schemas/Team'        
   /team/{teamId}/image:
     put:
       tags:
         - team
+      security:
+        - bearerAuth: []
       summary: Updates the image of an existing team
       parameters:
         - name: teamId
@@ -138,10 +206,29 @@ paths:
           description: 'Team succesfully updated'
         '400':
           description: 'Invalid id or image provided'
-  /league/add:
+  /league:
+    get:
+      tags:
+        - league
+      security:
+        - bearerAuth: []
+      summary: Returns all available leagues
+      description: Returns all available leagues in database
+      operationId: getAllLeagues
+      responses:
+        '200':
+          description: Available leagues
+          content: 
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/League'
     post:
       tags:
         - league
+      security:
+        - bearerAuth: []
       summary: Adds a new league
       description: New league that will include new teams
       operationId: addLeague
@@ -167,26 +254,12 @@ paths:
                   application/json:
                     schema: 
                       $ref: '#/components/schemas/League'
-  /league:
-    get:
-      tags:
-        - league
-      summary: Returns all available leagues
-      description: Returns all available leagues in database
-      operationId: getAllLeagues
-      responses:
-        '200':
-          description: Available leagues
-          content: 
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/League'
   /match:
     post:
       tags: 
         - match
+      security:
+        - bearerAuth: []
       summary: Creates a new match
       description: Creates a new match in the database if home and away teams ids are valid.
       operationId: addMatch
@@ -207,6 +280,8 @@ paths:
     get:
       tags:
         - match
+      security:
+        - bearerAuth: []
       summary: Returns a match if it exists in database
       description: Provide a valid mongo id corresponfing to a match and it will be returned
       operationId: getMatchById
@@ -233,6 +308,8 @@ paths:
     put:
       tags:
         - match
+      security:
+        - bearerAuth: []
       summary: Updates the match provided by id
       description: It doesn't matter which param needs to be update. Just send the proper json and it will be updated
       operationId: updateMatch
@@ -258,6 +335,8 @@ paths:
     delete:
       tags:
         - match
+      security:
+        - bearerAuth: []
       summary: Deletes an existing match in database
       description: Provide a valid mongo id corresponding to a match and it will be deleted
       operationId: deleteMatch
@@ -277,6 +356,8 @@ paths:
     get:
       tags:
         - match
+      security:
+        - bearerAuth: []
       summary: Returns all the matches available
       description: Returns all the matches created in the database
       operationId: getAllMatches
@@ -292,7 +373,40 @@ paths:
         '400':
           description: Invalid id provided
 components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT 
   schemas:
+    Login:
+      required:
+        - email
+        - password
+      type: object
+      properties:
+        email:
+          type: string
+          example: icordondominguez@gmail.com
+        password: 
+          type: string
+          example: 10sept2024
+    User:
+      required:
+        - name
+        - email
+        - password
+      type: object
+      properties:
+        name:
+          type: string
+          example: Ismael
+        email:
+          type: string
+          example: icordondominguez@gmail.com
+        password:
+          type: string
+          example: 7sept2024
     Team:
       required:
         - _id

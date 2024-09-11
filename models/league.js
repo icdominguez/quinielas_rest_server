@@ -11,4 +11,10 @@ const LeagueSchema = Schema({
     }
 })
 
+LeagueSchema.methods.toJSON = function() {
+    const { __v, _id, ...league } = this.toObject()
+    league.leagueId = _id
+    return league
+}
+
 module.exports = model('League', LeagueSchema)

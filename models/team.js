@@ -16,4 +16,10 @@ const TeamSchema = Schema({
     }
 })
 
+TeamSchema.methods.toJSON = function() {
+    const { __v, _id, ...team } = tbis.toObject()
+    team.teamId = _id
+    return team
+}
+
 module.exports = model('Team', TeamSchema)

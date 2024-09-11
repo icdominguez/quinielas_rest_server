@@ -11,9 +11,11 @@ class Server {
     constructor() {
         this.app = express()
         this.port = process.env.PORT;
+        this.authPath = "/api/auth"
         this.teamPath = "/api/team"
         this.leaguePath = "/api/league"
         this.matchPath = "/api/match"
+        this.userPath = "/api/user"
         this.connectDatabase()
         this.middlewares()
         this.routes()
@@ -24,9 +26,11 @@ class Server {
     }
 
     routes() {
+        this.app.use(this.authPath, require('../routes/auth.routes'))
         this.app.use(this.teamPath, require('../routes/team.routes'))
         this.app.use(this.leaguePath, require('../routes/league.routes'))
         this.app.use(this.matchPath, require('../routes/match.routes'))
+        this.app.use(this.userPath, require('../routes/user.routes'))
     }
 
     middlewares() {
